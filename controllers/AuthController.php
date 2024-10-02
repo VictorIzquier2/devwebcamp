@@ -33,6 +33,13 @@ class AuthController {
                         $_SESSION['apellido'] = $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
                         $_SESSION['admin'] = $usuario->admin ?? null;
+
+                        // Redireccion Usuario o Admin 
+                        if($usuario->admin){
+                            header('Location: /admin/dashboard');
+                        }else{
+                            header('Location: /finalizar-registro');
+                        }
                         
                     } else {
                         Usuario::setAlerta('error', 'Password Incorrecto');
@@ -66,25 +73,28 @@ class AuthController {
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $usuario->sincronizar($_POST);
+
             
             $alertas = $usuario->validar_cuenta();
-
+            
             if(empty($alertas)) {
                 $existeUsuario = Usuario::where('email', $usuario->email);
-
+                
                 if($existeUsuario) {
                     Usuario::setAlerta('error', 'El Usuario ya esta registrado');
                     $alertas = Usuario::getAlertas();
                 } else {
                     // Hashear el password
                     $usuario->hashPassword();
-
+                    
                     // Eliminar password2
                     unset($usuario->password2);
-
+                    unset($usuario->password_actual);
+                    unset($usuario->password_nuevo);
+                    
                     // Generar el Token
                     $usuario->crearToken();
-
+                    
                     // Crear un nuevo usuario
                     $resultado =  $usuario->guardar();
 
@@ -216,14 +226,15 @@ class AuthController {
         
         $token = s($_GET['token']);
 
+        
         if(!$token) header('Location: /');
-
+        
         // Encontrar al usuario con este token
         $usuario = Usuario::where('token', $token);
 
         if(empty($usuario)) {
             // No se encontró un usuario con ese token
-            Usuario::setAlerta('error', 'Token No Válido');
+            Usuario::setAlerta('error', 'Token No Válido, la cuenta no se confirmó');
         } else {
             // Confirmar la cuenta
             $usuario->confirmado = 1;

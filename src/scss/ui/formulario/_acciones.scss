@@ -1,0 +1,21 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use 'sass:color';
+
+.acciones{
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+
+  &__enlace{
+    color: v.$negro;
+    font-size: 1.6rem;
+    font-weight: v.$delgada;
+  }
+
+  &--centrado{
+    @extend .acciones;
+    justify-content: center;
+  }
+
+}
