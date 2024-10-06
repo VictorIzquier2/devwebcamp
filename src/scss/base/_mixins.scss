@@ -53,6 +53,11 @@
     margin: 0 auto;
 }
 
+@mixin contenedor-md{
+    width: min(95%, 80rem);
+    margin: 0 auto;    
+}
+
 @mixin contenedor-sm{
     width: min(95%, 60rem);
     margin: 0 auto;    
@@ -142,5 +147,36 @@
     &:hover{
         color: $hoverColor;
         cursor: pointer;
+    }
+}
+
+@mixin shadow {
+    box-shadow:rgba(50,50,95, .25) 0px 12px 25px -5px, rgba(0, 0, 0, .3) 0px 8px 16px -8px
+}
+
+@mixin reset-lista{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@mixin tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    @include reset-lista;
+    margin-top: 1.5rem;
+
+    > li {
+        background-color: v.$azul;
+        padding: 1rem;
+        border-radius: .5rem;
+        font-size: 1.4rem;
+        color: v.$blanco;
+        font-weight: v.$bold;
+        
+        &:hover{
+            cursor: pointer;
+        }
     }
 }
