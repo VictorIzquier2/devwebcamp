@@ -28,6 +28,14 @@
     @include m.enlace(transparent, v.$blanco, v.$azul, v.$bold);
   }
 
+  &__form{
+    display: flex;
+  }
+
+  &__submit{
+    @extend .header__enlace;
+  }
+
   &__contenido{
     padding-top: 10rem;
 
